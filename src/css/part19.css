@@ -1,0 +1,346 @@
+
+.rail-mode-nav button.active {
+  background: var(--panel);
+  border-color: rgba(0, 0, 0, 0.05);
+  color: var(--accent-ink);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.iris-shell .rail-sheet.dashboard {
+  margin-left: 10px;
+  background: var(--panel-2);
+}
+
+.iris-shell .rail-subgroup {
+  margin-left: 0;
+  border-top: 0;
+}
+
+.iris-shell .rail-subgroup > span {
+  padding-left: 10px;
+}
+
+.rail-active-sheets {
+  margin: -4px 10px 12px;
+  padding: 8px 0 2px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel-2);
+}
+
+.rail-active-sheets .rail-subgroup {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.rail-active-sheets .rail-subgroup > span {
+  padding: 0 10px 8px;
+}
+
+.rail-empty-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 9px 7px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.iris-shell .rail-subgroup-scroll {
+  justify-content: flex-start;
+}
+
+.iris-shell .rail-new-row {
+  margin-left: 10px;
+}
+
+.rail-assets {
+  flex: 1.15;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+}
+.rail-assets.collapsed {
+  flex: 0 0 auto;
+  min-height: 0;
+}
+.rail-assets-body {
+  min-height: 0;
+  overflow: auto;
+  padding: 0 10px 12px;
+}
+.rail-asset-search {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.rail-asset-search span,
+.rail-asset-group-title {
+  color: var(--faint);
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.rail-asset-search input {
+  width: 100%;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0 10px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 12px;
+  outline: none;
+}
+.rail-asset-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
+}
+.rail-assets-summary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+.rail-assets-summary strong {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+}
+.rail-asset-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+.rail-asset-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.rail-asset-group-title em {
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
+.rail-asset-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+.rail-asset-card.hidden-asset {
+  border-color: var(--border-strong);
+  background: var(--panel-2);
+}
+.rail-asset-main {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  padding: 8px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.rail-asset-main:hover {
+  background: var(--inset);
+}
+.rail-asset-kind {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--accent-weak);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 800;
+}
+.rail-asset-main strong,
+.rail-asset-main em,
+.rail-asset-main small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rail-asset-main strong {
+  font-size: 12px;
+  font-weight: 750;
+}
+.rail-asset-main em {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-style: normal;
+}
+.rail-asset-main small {
+  margin-top: 1px;
+  color: var(--faint);
+  font-size: 10px;
+}
+.rail-asset-actions {
+  display: flex;
+  gap: 5px;
+  padding: 0 8px 8px 40px;
+}
+.rail-asset-actions button {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 7px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.rail-asset-actions button:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-weak);
+  color: var(--accent);
+}
+
+.iris-shell .workspace:not(.dashboard-shell) {
+  --right-width: 330px;
+}
+
+.iris-shell .workspace.code-workspace-shell:not(.dashboard-shell) {
+  --right-width: 380px;
+}
+
+.iris-shell .graph-title-row {
+  min-height: 52px;
+  padding: 8px 18px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.iris-shell .graph-title-row .view-eyebrow {
+  color: var(--muted);
+}
+
+.iris-shell .workspace-title-input {
+  width: min(460px, 42vw);
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+
+.graph-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.graph-meta-line strong {
+  color: var(--text);
+}
+
+.iris-shell .graph-source-select,
+.iris-shell .backlink-btn {
+  min-height: 32px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.iris-shell .shelves {
+  padding: 10px 18px 12px;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.iris-shell .shelf {
+  gap: 5px;
+}
+
+.iris-shell .shelf-drop {
+  min-height: 34px;
+  border-radius: 7px;
+  border: 1px dashed var(--border-strong);
+  background: var(--panel);
+  transition: all 0.15s ease;
+}
+
+.iris-shell .shelf-drop:hover {
+  border-color: var(--accent);
+  background: var(--accent-weak);
+}
+
+.iris-shell .field-pill {
+  border-radius: 6px;
+  background: var(--panel);
+  border-color: var(--border);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.iris-shell .field-pill .type-dot.numeric {
+  background: #059669;
+}
+
+.iris-shell .field-pill .type-dot.categorical {
+  background: #d97706;
+}
+
+.iris-shell .preview-stage {
+  min-height: 440px;
+  margin: 16px 20px 12px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.iris-shell .bottom-shell {
+  background: var(--panel-2);
+  border-top: 1px solid var(--border);
+}
+
+.iris-shell .bottom-toggle {
+  padding-left: 18px;
+}
+
+.iris-shell .bottom-panel {
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.iris-shell .tabbar {
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.iris-shell .tab {
+  border-radius: 0;
+  font-weight: 650;
+  font-size: 12px;
+}

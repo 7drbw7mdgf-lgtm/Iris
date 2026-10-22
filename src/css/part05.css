@@ -1,0 +1,349 @@
+.sheet-tool-btn,
+.sheet-tool-select {
+  min-height: 24px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 650;
+}
+.sheet-tool-btn {
+  padding: 3px 7px;
+  cursor: pointer;
+}
+.sheet-tool-btn:hover:not(:disabled),
+.sheet-tool-btn.active {
+  border-color: #cfd8e6;
+  background: #eef3ff;
+  color: var(--accent);
+}
+.sheet-tool-btn:disabled,
+.sheet-tool-select:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+.sheet-tool-icon {
+  width: 26px;
+  padding: 2px 0;
+  font-size: 13px;
+  font-weight: 900;
+}
+.sheet-tool-icon.italic {
+  font-style: italic;
+}
+.sheet-tool-btn.swatch {
+  width: 24px;
+  padding: 0;
+}
+.sheet-tool-btn.swatch::before {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin: 4px auto;
+  border: 1px solid #bcc7d6;
+  border-radius: 3px;
+}
+.sheet-tool-btn.swatch.yellow::before {
+  background: #fff2a8;
+}
+.sheet-tool-btn.swatch.clear::before {
+  background:
+    linear-gradient(135deg, transparent 42%, #d92d20 43%, #d92d20 57%, transparent 58%),
+    #fff;
+}
+.sheet-tool-select {
+  width: 104px;
+  padding: 3px 24px 3px 7px;
+  border-color: #d7dde7;
+  background: #fff;
+}
+/* Color Picker Popovers in Ribbon */
+.ribbon-color-picker-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.color-dropdown-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  position: relative;
+  min-width: 32px;
+}
+.color-dropdown-btn .color-icon-bucket {
+  font-size: 11px;
+  line-height: 1;
+}
+.color-dropdown-btn .color-indicator-bar {
+  display: block;
+  width: 18px;
+  height: 3px;
+  margin-top: 2px;
+  border-radius: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+}
+.color-dropdown-btn .dropdown-caret {
+  position: absolute;
+  right: 1px;
+  bottom: 2px;
+  font-size: 8px;
+  color: #718096;
+}
+.color-palette-popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  z-index: 100;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  min-width: 140px;
+}
+.palette-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 24px);
+  gap: 5px;
+  margin-bottom: 6px;
+}
+.color-swatch-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.color-swatch-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.clear-color-btn {
+  display: block;
+  width: 100%;
+  padding: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  background: #f8fafc;
+  cursor: pointer;
+}
+.clear-color-btn:hover {
+  background: #eef2f6;
+}
+
+/* Ribbon Dropdown Menus */
+.ribbon-dropdown-menu {
+  position: relative;
+  display: inline-block;
+}
+.ribbon-dropdown-menu summary::-webkit-details-marker {
+  display: none;
+}
+.ribbon-summary-btn {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+.ribbon-dropdown-popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 3px;
+  z-index: 100;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  padding: 4px 0;
+  min-width: 160px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.ribbon-dropdown-popover button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 5px 12px;
+  border: 0;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+.ribbon-dropdown-popover button:hover {
+  background: #f0fdf4;
+  color: #107c41;
+}
+
+/* Sheet Formula Bar */
+.sheet-formula-bar {
+  display: grid;
+  grid-template-columns: 88px auto minmax(240px, 1fr) minmax(140px, auto);
+  align-items: center;
+  gap: 6px;
+  min-width: max-content;
+  padding: 5px 8px;
+  border: 1px solid #d4dce7;
+  border-radius: 6px;
+  background: #f9fafb;
+  position: relative;
+  z-index: 4;
+}
+.sheet-name-box {
+  min-width: 82px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background: #fff;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.formula-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  background: #ffffff;
+  padding: 1px 2px;
+  height: 28px;
+}
+.formula-bar-btn {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+.formula-bar-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  color: #111827;
+}
+.formula-bar-btn.cancel-btn:hover:not(:disabled) {
+  color: #ef4444;
+}
+.formula-bar-btn.commit-btn:hover:not(:disabled) {
+  color: #107c41;
+}
+.formula-bar-btn.fx-btn {
+  font-style: italic;
+  font-family: Georgia, serif;
+  font-weight: 900;
+  color: #107c41;
+  font-size: 13px;
+}
+.formula-bar-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.sheet-formula-input {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 28px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background: #fff;
+  overflow: hidden;
+}
+.sheet-formula-input span {
+  flex: 0 0 auto;
+  padding: 0 10px;
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 900;
+}
+.sheet-formula-input input {
+  flex: 1 1 auto;
+  min-width: 160px;
+  height: 100%;
+  border: 0;
+  padding: 0 9px;
+  background: transparent;
+  color: var(--text);
+  font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.sheet-formula-input input:focus {
+  outline: 0;
+  background: #fbfdff;
+}
+.sheet-formula-input .sheet-tool-btn {
+  height: 100%;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 0;
+}
+.sheet-selection-summary {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Floating Live Function Syntax Hint Tooltip */
+.sheet-function-hint {
+  position: absolute;
+  top: 100%;
+  left: 120px;
+  margin-top: 4px;
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: 480px;
+  padding: 8px 12px;
+  background: #0f172a;
+  color: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  font-size: 11px;
+  pointer-events: none;
+  animation: fadeInHint 0.15s ease-out;
+}
+@keyframes fadeInHint {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.sheet-function-hint .hint-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

@@ -1,0 +1,347 @@
+.rail-subgroup-scroll .rail-sheet:hover {
+  border-color: color-mix(in srgb, var(--accent) 36%, var(--border));
+  background: var(--inset);
+}
+.rail-subgroup-scroll .rail-sheet.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent), inset 0 1px 0 rgba(255,255,255,0.75);
+}
+.rail-subgroup-scroll .rail-sheet::after {
+  content: none;
+}
+.rail-subgroup-scroll .rail-sheet > span:nth-child(2),
+.rail-subgroup-scroll .rail-sheet .tab-close {
+  display: none;
+}
+.rail-subgroup-scroll .rail-sheet .tab-kind {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: none;
+}
+.rail-subgroup-data > span { color: var(--c1); }
+.rail-subgroup-stats > span { color: var(--accent-ink); }
+.rail-subgroup-graph > span { color: var(--c3); }
+.rail-subgroup-asset > span { color: var(--c2); }
+.rail-subgroup-graph .rail-sheet,
+.rail-subgroup-asset .rail-sheet {
+  border-color: rgba(210, 219, 232, 0.86);
+  background: var(--control-bg);
+}
+.iris-shell[data-theme="dark"] .rail-subgroup-graph .rail-sheet,
+.iris-shell[data-theme="dark"] .rail-subgroup-asset .rail-sheet {
+  background: rgba(255,255,255,0.04);
+}
+.rail-new-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: auto 10px 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.rail-new-row button {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--control-bg);
+  color: var(--text);
+  padding: 6px 7px;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+}
+.iris-shell .workspace {
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: none;
+}
+.iris-shell .workspace:not(.dashboard-shell) {
+  --right-width: 312px;
+}
+.iris-shell .workspace.code-workspace-shell:not(.dashboard-shell) {
+  --right-width: 380px;
+}
+
+.iris-shell .workspace.data-workspace-shell:not(.dashboard-shell) {
+  --right-width: 0px;
+}
+
+.iris-shell .workspace.data-workspace-shell .right {
+  display: none;
+}
+
+.iris-shell .workspace.code-workspace-shell.inspector-collapsed:not(.dashboard-shell) {
+  --right-width: 0px;
+}
+
+.iris-shell .workspace.code-workspace-shell.inspector-collapsed .right {
+  display: none;
+}
+.iris-shell .workspace.inspector-collapsed:not(.dashboard-shell) {
+  --right-width: 0px;
+}
+.iris-shell .right {
+  background: var(--panel);
+}
+.iris-shell .workspace.inspector-collapsed .right {
+  border-left: 0;
+  background: transparent;
+}
+.iris-shell .workspace.inspector-collapsed .inspector {
+  display: none;
+}
+.iris-shell .workspace.inspector-collapsed .code-preview-rail {
+  display: none;
+}
+.iris-shell .workspace.inspector-collapsed .right-edge-toggle {
+  position: fixed;
+  left: auto;
+  right: 14px;
+  top: 50%;
+  width: auto;
+  height: 38px;
+  min-width: 72px;
+  gap: 6px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 14px 30px rgba(124,58,237,0.28);
+}
+.iris-shell .workspace.inspector-collapsed .right-edge-toggle:hover {
+  background: #6d28d9;
+  border-color: #6d28d9;
+  color: #fff;
+}
+.dashboard-shell {
+  display: block;
+  overflow: hidden;
+}
+.graph-workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.graph-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px 8px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.graph-title-row h2 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.15;
+}
+.graph-title-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.graph-source-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font-size: 12px;
+}
+.graph-source-select span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.graph-source-select select {
+  max-width: 210px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  outline: none;
+}
+.backlink-btn {
+  color: var(--accent);
+  border-color: rgba(79, 70, 229, 0.24);
+  background: #f4f3ff;
+}
+.workspace-title-input {
+  width: min(360px, 52vw);
+  min-width: 140px;
+  margin: 0;
+  padding: 2px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+.workspace-title-input:hover {
+  border-bottom-color: var(--border);
+}
+.workspace-title-input:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+.change-type-btn span {
+  margin-left: 6px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.iris-shell .shelves {
+  padding: 12px 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.iris-shell .preview-stage {
+  min-height: 360px;
+  margin: 20px 20px 4px;
+  padding: 18px 20px 8px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+.iris-shell .dashboard-floating-body .preview-stage {
+  min-height: 180px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.iris-shell .dashboard-floating-body .plotly-host,
+.iris-shell .dashboard-floating-body .js-plotly-plot,
+.iris-shell .dashboard-floating-body .plot-container,
+.iris-shell .dashboard-floating-body .svg-container,
+.iris-shell .dashboard-floating-body .main-svg {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+.iris-shell .dashboard-floating-body .bg,
+.iris-shell .dashboard-floating-body .legend .bg {
+  fill: transparent !important;
+  stroke: transparent !important;
+}
+.iris-shell .bottom-shell {
+  border-top: 1px solid rgba(226,229,234,0.9);
+}
+.iris-shell .inspector-toolbar {
+  padding: 12px 14px 8px;
+  border-bottom: 0;
+  margin: 0;
+}
+.iris-shell .graph-library-panel {
+  background: transparent;
+  padding: 0 14px 14px;
+}
+.iris-shell .section-head {
+  padding: 11px 14px;
+}
+.iris-shell .section-body {
+  padding: 2px 14px 16px;
+}
+.iris-shell .section {
+  border-top: 1px solid var(--border);
+  border-bottom: 0;
+}
+.iris-shell .section-toggle {
+  font-size: 12.5px;
+}
+.iris-shell .ctl-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+}
+.iris-shell .ctl-input input,
+.iris-shell .ctl-input select,
+.iris-shell .library-row input,
+.iris-shell .tk-field input,
+.iris-shell .tk-field select {
+  height: 30px;
+  border-radius: 7px;
+  border-color: var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+}
+.iris-shell .typecard {
+  margin: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--panel-2);
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.iris-shell .typecard .ic {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--accent);
+}
+.iris-shell .chart-type-mini-icon {
+  display: block;
+}
+.iris-shell .typecard .body {
+  flex: 1;
+  min-width: 0;
+}
+.iris-shell .typecard .k {
+  color: var(--faint);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.iris-shell .typecard .chart-type-dropdown {
+  width: 100%;
+  margin-top: 2px;
+  height: 26px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0 4px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.iris-shell .typecard .chart-type-dropdown:hover,
+.iris-shell .typecard .chart-type-dropdown:focus {
+  border-color: var(--border-strong);
+  background: var(--panel);
+}
+.iris-shell .typecard .chart-type-dropdown optgroup {
+  font-weight: 800;
+  color: var(--faint);
+  background: var(--panel-2);
+}

@@ -1,0 +1,44 @@
+{
+  "name": "iris",
+  "private": true,
+  "version": "5.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "node --import ./tests/support/ts-resolve.mjs --test tests/*.test.mjs",
+    "tauri": "tauri",
+    "bundle:dmg": "CI=true tauri build --bundles dmg",
+    "bundle:universal": "CI=true tauri build --target universal-apple-darwin --bundles dmg"
+  },
+  "dependencies": {
+    "@codemirror/lang-python": "^6.2.1",
+    "@codemirror/language": "^6.12.4",
+    "@codemirror/legacy-modes": "^6.5.3",
+    "@codemirror/state": "^6.7.1",
+    "@codemirror/view": "^6.43.9",
+    "@lezer/highlight": "^1.2.3",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "^2",
+    "@tauri-apps/plugin-opener": "^2",
+    "@types/pako": "^2.0.4",
+    "@uiw/react-codemirror": "^4.25.11",
+    "pako": "^3.0.1",
+    "papaparse": "^5.4.1",
+    "plotly.js-dist-min": "^2.35.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/papaparse": "^5.3.14",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "playwright": "^1.62.1",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4"
+  }
+}
