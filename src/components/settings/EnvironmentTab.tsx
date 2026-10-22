@@ -128,6 +128,54 @@ export function EnvironmentTab({
         )}
       </div>
 
+      {/* Local Host Web Server Card */}
+      <div className="env-status-card-modern">
+        <div className="env-card-head">
+          <div className="env-title-group">
+            <span className="env-logo" style={{ background: "#3b82f6", color: "#fff", fontWeight: 700 }}>LH</span>
+            <div>
+              <strong>Local Host Web Server</strong>
+              <span className="env-subtitle">Embedded HTTP service for browser access and REST APIs</span>
+            </div>
+          </div>
+          <span className="env-badge ok">✓ Active &amp; Listening</span>
+        </div>
+        <div className="env-details-grid">
+          <div className="env-detail-cell">
+            <span className="cell-label">Localhost URL</span>
+            <code>http://127.0.0.1:4180</code>
+          </div>
+          <div className="env-detail-cell">
+            <span className="cell-label">REST API</span>
+            <span><code>/api/status</code>, <code>/api/health</code></span>
+          </div>
+          <div className="env-detail-cell full">
+            <span className="cell-label">External Integration</span>
+            <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
+              Access Iris from any web browser (Safari, Chrome) or connect external computational notebooks via loopback.
+            </span>
+          </div>
+        </div>
+        <div className="env-card-action-bar" style={{ display: "flex", gap: 8 }}>
+          <button
+            className="btn small primary"
+            type="button"
+            onClick={() => window.open("http://127.0.0.1:4180", "_blank")}
+          >
+            Open in Web Browser
+          </button>
+          <button
+            className="btn small"
+            type="button"
+            onClick={() => {
+              navigator.clipboard.writeText("http://127.0.0.1:4180");
+            }}
+          >
+            Copy Localhost URL
+          </button>
+        </div>
+      </div>
+
       {/* Refresh & Diagnostics */}
       <div className="env-footer-actions">
         <button

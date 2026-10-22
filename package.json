@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "node --import ./tests/support/ts-resolve.mjs --test tests/*.test.mjs",
+    "localhost": "python3 scripts/iris_localhost.py",
     "tauri": "tauri",
     "bundle:dmg": "CI=true tauri build --bundles dmg",
     "bundle:universal": "CI=true tauri build --target universal-apple-darwin --bundles dmg"

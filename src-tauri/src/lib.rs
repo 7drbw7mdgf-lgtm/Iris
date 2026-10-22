@@ -8,8 +8,11 @@ pub mod python_runner;
 pub mod panel_splitter;
 pub mod renderer_status;
 pub mod updates;
+pub mod localhost_server;
 
+use std::sync::Arc;
 pub use file_ops::{read_binary_file_base64, read_text_file, write_base64_file, write_text_file};
+pub use localhost_server::{LocalhostState, DEFAULT_PORT};
 pub use panel_splitter::split_python_figure_panels;
 pub use python_env::repair_python_env;
 pub use python_runner::{render_python_plot, run_python_script};
@@ -21,11 +24,21 @@ pub use utils::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    let localhost_state = Arc::new(LocalhostState::default());
+    let server_state = localhost_state.clone();
+
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .manage(UpdateState::default())
+        .manage(localhost_state)
+        .setup(move |_app| {
+            tauri::async_runtime::spawn(async move {
+                let _ = localhost_server::start_localhost_server(DEFAULT_PORT, server_state).await;
+            });
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             r_runner::run_r_script,
             python_runner::run_python_script,
@@ -45,7 +58,9 @@ pub fn run() {
             updates::iris_update_download,
             updates::iris_update_cancel,
             updates::iris_update_preferences,
-            updates::iris_update_install
+            updates::iris_update_install,
+            localhost_server::iris_localhost_info,
+            localhost_server::iris_open_localhost
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

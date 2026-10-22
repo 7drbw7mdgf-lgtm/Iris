@@ -116,3 +116,33 @@ test("data engine utilities profile volume and identify parquet formats", () => 
   const sampled = createPreviewSample(SAMPLE_DATASET, 20);
   assert.equal(sampled.rows.length, 20);
 });
+
+test("iris localhost server serves status and api endpoints on 127.0.0.1", async () => {
+  const { spawn } = await import("node:child_process");
+  const testPort = 4199;
+  const pyServer = spawn("python3", ["scripts/iris_localhost.py", String(testPort)]);
+
+  try {
+    // Wait for server to bind
+    let res = null;
+    for (let i = 0; i < 20; i++) {
+      try {
+        const resp = await fetch(`http://127.0.0.1:${testPort}/api/status`);
+        if (resp.ok) {
+          res = await resp.json();
+          break;
+        }
+      } catch {
+        await new Promise((r) => setTimeout(r, 100));
+      }
+    }
+
+    assert.ok(res !== null, "Localhost server should respond within timeout");
+    assert.equal(res.status, "ok");
+    assert.equal(res.app, "Iris");
+    assert.equal(res.localhost, true);
+    assert.equal(res.port, testPort);
+  } finally {
+    pyServer.kill();
+  }
+});
