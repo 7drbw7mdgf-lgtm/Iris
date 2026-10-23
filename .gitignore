@@ -34,3 +34,4 @@ target
 # Test results and temporary files
 test-results
 .claude
+panelA_mfuzz_trajectories.*

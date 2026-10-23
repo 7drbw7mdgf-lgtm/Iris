@@ -142,6 +142,28 @@ test("iris localhost server serves status and api endpoints on 127.0.0.1", async
     assert.equal(res.app, "Iris");
     assert.equal(res.localhost, true);
     assert.equal(res.port, testPort);
+
+    // Verify path traversal is strictly blocked
+    const http = await import("node:http");
+    const traversalStatus = await new Promise((resolve) => {
+      const req = http.request({ host: "127.0.0.1", port: testPort, path: "/../../package.json" }, (res) => {
+        resolve(res.statusCode);
+      });
+      req.on("error", () => resolve(null));
+      req.end();
+    });
+    assert.equal(traversalStatus, 403, "Path traversal attempt must be blocked with 403");
+
+    // Verify foreign Host header is rejected
+    const badHostStatus = await new Promise((resolve) => {
+      const req = http.request(
+        { host: "127.0.0.1", port: testPort, path: "/api/status", headers: { Host: "evil.attacker.com" } },
+        (res) => resolve(res.statusCode)
+      );
+      req.on("error", () => resolve(null));
+      req.end();
+    });
+    assert.equal(badHostStatus, 403, "Non-loopback host must be rejected with 403");
   } finally {
     pyServer.kill();
   }

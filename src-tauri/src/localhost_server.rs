@@ -1,5 +1,5 @@
 //! Embedded local host HTTP server for Iris.
-//! Serves the web studio interface and provides REST APIs on 127.0.0.1.
+//! Serves the web studio interface and provides REST APIs securely on 127.0.0.1.
 use serde::{Deserialize, Serialize};
 use std::{
     path::{Path, PathBuf},
@@ -55,10 +55,32 @@ fn resolve_dist_path() -> PathBuf {
     ];
     for c in &candidates {
         if c.exists() && c.is_dir() {
-            return c.clone();
+            if let Ok(canon) = c.canonicalize() {
+                return canon;
+            }
         }
     }
     PathBuf::from("dist")
+}
+
+fn is_valid_loopback_host(host: &str) -> bool {
+    let trimmed = host.trim();
+    let hostname = trimmed.split(':').next().unwrap_or("");
+    hostname == "127.0.0.1" || hostname == "localhost"
+}
+
+fn allowed_cors_origin(origin: &str) -> Option<String> {
+    let trimmed = origin.trim();
+    if trimmed.starts_with("http://127.0.0.1:")
+        || trimmed.starts_with("http://localhost:")
+        || trimmed == "http://127.0.0.1"
+        || trimmed == "http://localhost"
+        || trimmed == "tauri://localhost"
+    {
+        Some(trimmed.to_string())
+    } else {
+        None
+    }
 }
 
 async fn handle_connection(mut socket: TcpStream, dist_dir: PathBuf) {
@@ -83,10 +105,35 @@ async fn handle_connection(mut socket: TcpStream, dist_dir: PathBuf) {
     let raw_path = parts[1];
     let path = raw_path.split('?').next().unwrap_or("/");
 
-    let cors_headers = "Access-Control-Allow-Origin: *\r\nAccess-Control-Allow-Methods: GET, POST, OPTIONS\r\nAccess-Control-Allow-Headers: Content-Type\r\n";
+    let mut host_header = "";
+    let mut origin_header = "";
+    for line in lines {
+        let lower = line.to_ascii_lowercase();
+        if lower.starts_with("host:") {
+            host_header = line[5..].trim();
+        } else if lower.starts_with("origin:") {
+            origin_header = line[7..].trim();
+        }
+    }
+
+    // Verify Host header matches loopback
+    if !host_header.is_empty() && !is_valid_loopback_host(host_header) {
+        let resp = "HTTP/1.1 403 Forbidden\r\nContent-Type: text/plain\r\nContent-Length: 17\r\n\r\nForbidden Host\r\n";
+        let _ = socket.write_all(resp.as_bytes()).await;
+        return;
+    }
+
+    // Determine strict CORS header
+    let cors_header = match allowed_cors_origin(origin_header) {
+        Some(origin) => format!(
+            "Access-Control-Allow-Origin: {}\r\nAccess-Control-Allow-Methods: GET, POST, OPTIONS\r\nAccess-Control-Allow-Headers: Content-Type\r\n",
+            origin
+        ),
+        None => String::new(),
+    };
 
     if method == "OPTIONS" {
-        let resp = format!("HTTP/1.1 204 No Content\r\n{}Content-Length: 0\r\n\r\n", cors_headers);
+        let resp = format!("HTTP/1.1 204 No Content\r\n{}Content-Length: 0\r\n\r\n", cors_header);
         let _ = socket.write_all(resp.as_bytes()).await;
         return;
     }
@@ -95,31 +142,59 @@ async fn handle_connection(mut socket: TcpStream, dist_dir: PathBuf) {
         let status_json = serde_json::json!({
             "status": "ok",
             "app": "Iris",
-            "version": "5.2.0",
+            "version": env!("CARGO_PKG_VERSION"),
             "localhost": true,
             "dual_engines": ["r", "python"]
         });
         let body = status_json.to_string();
         let resp = format!(
             "HTTP/1.1 200 OK\r\n{}Content-Type: application/json\r\nContent-Length: {}\r\n\r\n{}",
-            cors_headers, body.len(), body
+            cors_header, body.len(), body
         );
         let _ = socket.write_all(resp.as_bytes()).await;
         return;
     }
 
-    // Static asset serving from dist
-    let mut file_path = dist_dir.join(if path == "/" { "index.html" } else { path.trim_start_matches('/') });
-    if !file_path.exists() {
-        file_path = dist_dir.join("index.html");
+    // Block path traversal attempts
+    let decoded_path = path.replace("%2e", ".").replace("%2E", ".");
+    if decoded_path.contains("..") || decoded_path.contains('\\') {
+        let resp = "HTTP/1.1 403 Forbidden\r\nContent-Type: text/plain\r\nContent-Length: 20\r\n\r\nInvalid Path Request\r\n";
+        let _ = socket.write_all(resp.as_bytes()).await;
+        return;
     }
 
-    if file_path.exists() && file_path.is_file() {
+    // Safe static asset resolution within dist_dir
+    let canonical_dist = dist_dir.canonicalize().unwrap_or_else(|_| dist_dir.clone());
+    let clean_rel = path.trim_start_matches('/');
+    let target = if clean_rel.is_empty() {
+        canonical_dist.join("index.html")
+    } else {
+        canonical_dist.join(clean_rel)
+    };
+
+    // Serve file only if its canonical path is strictly inside canonical_dist
+    let safe_file = if let Ok(canon_target) = target.canonicalize() {
+        if canon_target.starts_with(&canonical_dist) && canon_target.is_file() {
+            Some(canon_target)
+        } else {
+            None
+        }
+    } else {
+        // SPA fallback to index.html if request doesn't match an asset
+        let index_path = canonical_dist.join("index.html");
+        if index_path.is_file() {
+            Some(index_path)
+        } else {
+            None
+        }
+    };
+
+    if let Some(file_path) = safe_file {
         if let Ok(content) = tokio::fs::read(&file_path).await {
             let mime = mime_for_path(&file_path);
             let header = format!(
-                "HTTP/1.1 200 OK\r\n{}Content-Type: {}\r\nContent-Length: {}\r\nCache-Control: no-cache\r\n\r\n",
-                cors_headers, mime, content.len()
+                "HTTP/1.1 200 OK\r\n{}Content-Type: {}\r\nContent-Length: {}\r\nCache-Control: no-cache\r\nX-Content-Type-Options: nosniff\r\n\r\n",
+                cors_header, mime, content.len()
             );
             let _ = socket.write_all(header.as_bytes()).await;
             let _ = socket.write_all(&content).await;
@@ -127,11 +202,11 @@ async fn handle_connection(mut socket: TcpStream, dist_dir: PathBuf) {
         }
     }
 
-    // Default embedded fallback page if dist is not compiled
-    let fallback_html = r#"<!DOCTYPE html><html><head><meta charset="utf-8"><title>Iris Local Host</title><style>body{font-family:system-ui,-apple-system,sans-serif;padding:48px 24px;text-align:center;background:#0f172a;color:#f8fafc}h1{font-size:28px;margin-bottom:8px}.card{background:#1e293b;border-radius:12px;padding:32px;max-width:540px;margin:24px auto;border:1px solid #334155;text-align:left}pre{background:#0b1120;padding:12px;border-radius:6px;overflow-x:auto;color:#38bdf8}</style></head><body><h1>❀ Iris Local Host Server</h1><p>Embedded local server is running on <code>127.0.0.1</code>.</p><div class="card"><p><strong>Status:</strong> Online and listening for API requests.</p><p>To view the full user interface, build the frontend:</p><pre>npm run build</pre><p>All Python and R code generation endpoints are available.</p></div></body></html>"#;
+    // Fallback landing page if dist is not yet compiled
+    let fallback = r#"<!DOCTYPE html><html><head><meta charset="utf-8"><title>Iris Local Host</title><style>body{font-family:system-ui,sans-serif;padding:48px 24px;text-align:center;background:#0f172a;color:#f8fafc}h1{font-size:28px}.card{background:#1e293b;border-radius:12px;padding:24px;max-width:520px;margin:24px auto;text-align:left;border:1px solid #334155}code{background:#0b1120;padding:3px 6px;border-radius:4px;color:#38bdf8}</style></head><body><h1>❀ Iris Local Host</h1><div class="card"><p>Embedded server running on <code>127.0.0.1</code>.</p><p>Run <code>npm run build</code> to serve the studio web interface.</p></div></body></html>"#;
     let resp = format!(
         "HTTP/1.1 200 OK\r\n{}Content-Type: text/html; charset=utf-8\r\nContent-Length: {}\r\n\r\n{}",
-        cors_headers, fallback_html.len(), fallback_html
+        cors_header, fallback.len(), fallback
     );
     let _ = socket.write_all(resp.as_bytes()).await;
 }
@@ -212,6 +287,23 @@ mod tests {
         assert_eq!(mime_for_path(Path::new("style.css")), "text/css; charset=utf-8");
         assert_eq!(mime_for_path(Path::new("icon.svg")), "image/svg+xml");
         assert_eq!(mime_for_path(Path::new("data.json")), "application/json");
+    }
+
+    #[test]
+    fn host_header_validation_allows_only_loopback() {
+        assert!(is_valid_loopback_host("127.0.0.1:4180"));
+        assert!(is_valid_loopback_host("localhost:4180"));
+        assert!(is_valid_loopback_host("127.0.0.1"));
+        assert!(is_valid_loopback_host("localhost"));
+        assert!(!is_valid_loopback_host("evil.com"));
+        assert!(!is_valid_loopback_host("attacker.local"));
+    }
+
+    #[test]
+    fn cors_origin_restricted_to_loopback() {
+        assert!(allowed_cors_origin("http://127.0.0.1:4180").is_some());
+        assert!(allowed_cors_origin("http://localhost:1420").is_some());
+        assert!(allowed_cors_origin("https://evil.com").is_none());
     }
 
     #[tokio::test]

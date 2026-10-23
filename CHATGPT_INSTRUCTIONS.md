@@ -8,14 +8,14 @@ Welcome! This archive contains the complete source code and execution contract f
 
 Iris bridges interactive graphical data manipulation (Excel/Prism-like spreadsheet) with reproducible scientific programming (R/ggplot2 and Python matplotlib/seaborn/altair/plotly).
 
-- **Frontend (`src/`)**: React 18 + TypeScript + Vite.
+- **Frontend (`src/`)**: React 19 + TypeScript + Vite.
   - `src/App.tsx`: Main application shell, state management, tab routing, graph generation orchestration.
   - `src/components/DataPanel.tsx`: Full-featured Excel-like spreadsheet with live formula bar, 40+ functions (`SUM`, `AVERAGE`, `COUNTIF`, `VLOOKUP`, `IF`, etc.), ribbon toolbar, and coordinate-clamped context menus.
   - `src/components/BottomPanel.tsx`: Code Studio & **ChatGPT Visualization Studio Assistant**. Allows copy/pasting scripts with automatic markdown fence stripping, quick prompts, and prompt scaffolding.
   - `src/components/Inspector.tsx`: Right sidebar controls that adaptively show only relevant configuration shelves based on the selected `GraphType`.
-  - `src/components/ChartPaletteModal.tsx`: Visual gallery of 40+ publication chart types categorized by analytical purpose.
+  - `src/app/modals/ChartTypePaletteModal.tsx`: Visual gallery of 50+ publication chart types categorized by analytical purpose.
   - `src/components/SettingsModal.tsx`: Settings, diagnostic tests, R/Python environment configuration, and release info (v5.2.0).
-  - `src/generators/`: Script generators for R (ggplot2) and Python (matplotlib/seaborn/plotly/altair) across all chart types.
+  - `src/rgen/`, `src/pgen/`, `src/plotlyGen/`: Script and preview generators for R (ggplot2), Python (matplotlib/seaborn/plotly/altair), and Plotly previews across all chart types.
   - `src/types.ts`: Core data structures (`Dataset`, `PlotSpec`, `GraphType`, `PaletteName`, `ThemeName`).
 
 - **Backend (`src-tauri/`)**: Rust Tauri application.
