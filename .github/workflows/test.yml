@@ -30,6 +30,8 @@ jobs:
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # stable
+        with:
+          toolchain: stable
 
       - name: Install dependencies
         run: npm ci
